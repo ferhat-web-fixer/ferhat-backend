@@ -1,4 +1,4 @@
-console.log("Seni seviyorum Rabia!"); // Yeni mesaj
+console.log("Seni seviyorum Rabia!"); // deploy edince loglarda gözükecek
 
 const http = require('http');
 
@@ -8,12 +8,20 @@ const port = process.env.PORT || 8080;
 const server = http.createServer((req, res) => {
   if (req.url === '/') {
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8'); // Türkçe karakterler için
-    res.end('Merhaba Ferhat! Node container çalışıyor.\nDeğişiklikler yüklendi!\nSeni seviyorum Rabia!\n');
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Merhaba Ferhat! Node container çalışıyor.\nSeni seviyorum Rabia!\n');
   } else if (req.url === '/api') {
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.end(JSON.stringify({ message: 'API endpoint çalışıyor ve güncel! Seni seviyorum Rabia!' }));
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ message: 'API endpoint çalışıyor ve güncel!' }));
+  } else if (req.url === '/hello') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Hello Ferhat!');
+  } else if (req.url === '/goodbye') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Goodbye Ferhat!');
   } else {
     res.statusCode = 404;
     res.end('Sayfa bulunamadı.');
