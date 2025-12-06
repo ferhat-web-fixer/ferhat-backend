@@ -1,3 +1,5 @@
+# ferhat-backend/.github/workflows/deploy.yml
+# LÜTFEN DOSYANIN TAMAMININ AŞAĞIDAKİ GİBİ OLDUĞUNDAN EMİN OL
 name: Deploy to Railway
 
 on:
@@ -15,8 +17,8 @@ jobs:
           node-version: '18'
           
       - name: Deploy to Railway
-        uses: railwayapp/cli@v3 # En son denediğimiz stabil sürüm
+        uses: railwayapp/cli@v3 # CI/CD Hatasını çözen V3
         with:
-          # BURASI ÇOK ÖNEMLİ: 'secrets' ve 'RAILWAY_TOKEN' BİREBİR İNGİLİZCE VE BÜYÜK HARF OLMALI
+          # NOAUTH hatasını çözen token kısmı
           token: ${{ secrets.RAILWAY_TOKEN }} 
           service: ferhat-backend
