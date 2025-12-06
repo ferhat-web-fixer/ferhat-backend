@@ -15,12 +15,13 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Deploy to Railway
-        uses: railwayapp/cli@v3
+# deploy.yml dosyasındaki ilgili satır:
+# ESKİ (HATALI):
+# uses: railwayapp/cli@v3
+
+# YENİ (DOĞRU):
+      - name: Demiryoluna Konuşlandırma
+        uses: railwayapp/cli@v1 # Sürümü v1 olarak güncelledik!
         with:
-          # Railway API Token'ı (Bunu Adım C'de gizli tutacağız!)
           token: ${{ secrets.RAILWAY_TOKEN }} 
-          # Deploy edilecek servis adı
-          service: ferhat-backend 
-          # İsteğe bağlı, build komutunu Railway'e bırak
-          # command: npm install && npm run build
+          service: ferhat-backend
