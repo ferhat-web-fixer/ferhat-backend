@@ -8,20 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-  # deploy.yml dosyasındaki ADIMLAR (steps) kısmı:
-
-  steps:
+    steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
           
-      - name: Install Railway CLI
+      - name: Install Railway CLI # İLK ÇİZGİ BURADA
         run: npm install -g @railway/cli 
-        
-      - name: Railway CLI Login (Token'ı tanıtıyoruz) 
-        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
-        
-      - name: Deploy to Railway
-        # --token parametresine artık gerek yok, çünkü zaten login olduk.
-        run: railway up --service ferhat-backend
+
+      - name: Deploy to Railway # İKİNCİ ÇİZGİ BURADA
+        run: railway up --service ferhat-backend --token ${{ secrets.RAILWAY_TOKEN }}
