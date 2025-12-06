@@ -14,11 +14,10 @@ jobs:
         with:
           node-version: '18'
           
+   # deploy.yml dosyasındaki ilgili satır:
       - name: Deploy to Railway
-        # En stabil sürümü kullanıyoruz: master branch'i
-        uses: railwayapp/cli@master 
+        # En son STABİL sürümü TAM NUMARASIYLA kullanıyoruz
+        uses: railwayapp/cli@v3.2.0 
         with:
-          # Railway API Token'ı (Gizli tutulmalı)
           token: ${{ secrets.RAILWAY_TOKEN }} 
-          # Deploy edilecek servis adı
           service: ferhat-backend
