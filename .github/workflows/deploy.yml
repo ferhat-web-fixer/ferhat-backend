@@ -8,14 +8,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+  # deploy.yml dosyasındaki ADIMLAR (steps) kısmı:
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
           
-      - name: Install Railway CLI  # Railway CLI'ı kur
+      - name: Install Railway CLI
         run: npm install -g @railway/cli 
 
-      - name: Deploy to Railway  # Kurulan CLI ile dağıtımı yap
-        run: railway up --service ferhat-backend --token ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy to Railway # ARTIK TOKEN'I KOMUTTA DEĞİL, ENV'DE VERİYORUZ
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }} # YENİ YERİ!
+        run: railway up --service ferhat-backend # Daha temiz komut
