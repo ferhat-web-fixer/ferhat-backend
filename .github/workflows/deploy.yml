@@ -8,14 +8,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
+  steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
           
-      - name: Install Railway CLI # İLK ÇİZGİ BURADA
+      - name: Install Railway CLI
         run: npm install -g @railway/cli 
 
-      - name: Deploy to Railway # İKİNCİ ÇİZGİ BURADA
-        run: railway up --service ferhat-backend --token ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy to Railway
+        # Token'ı ENV olarak veriyoruz (Doğru yöntem)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }} 
+        # Komuttan --token argümanını kaldırıyoruz
+        run: railway up --service ferhat-backend # VEYA railway deploy --service ferhat-backend (Hangisi çalışırsa)
