@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      # NOT: Ana branch'in adı 'main' değilse, burayı güncellemeyi unutma!
 
 jobs:
   deploy:
@@ -15,13 +14,9 @@ jobs:
         with:
           node-version: '18'
           
-# deploy.yml dosyasındaki ilgili satır:
-# ESKİ (v2):
-# uses: railwayapp/cli@v2
-
-# YENİ (v3):
-      - name: Demiryoluna Konuşlandırma
-        uses: railwayapp/cli@v3 # Sürümü v3 olarak güncelledik (Genellikle en güncel stabil sürümdür)!
+      - name: Deploy to Railway
+        uses: railwayapp/cli@v3 # En son denediğimiz stabil sürüm
         with:
+          # BURASI ÇOK ÖNEMLİ: 'secrets' ve 'RAILWAY_TOKEN' BİREBİR İNGİLİZCE VE BÜYÜK HARF OLMALI
           token: ${{ secrets.RAILWAY_TOKEN }} 
           service: ferhat-backend
