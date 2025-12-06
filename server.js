@@ -1,33 +1,50 @@
-console.log("Seni seviyorum Rabia!"); // deploy edince loglarda gözükecek
-
 const http = require('http');
+const redis = require('redis'); // Redis'i dahil et
 
-const hostname = '0.0.0.0';
-const port = process.env.PORT || 8080;
-
-const server = http.createServer((req, res) => {
-  if (req.url === '/') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Merhaba Ferhat! Node container çalışıyor.\nSeni seviyorum Rabia!\n');
-  } else if (req.url === '/api') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ message: 'API endpoint çalışıyor ve güncel!' }));
-  } else if (req.url === '/hello') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello Ferhat!');
-  } else if (req.url === '/goodbye') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Goodbye Ferhat!');
-  } else {
-    res.statusCode = 404;
-    res.end('Sayfa bulunamadı.');
-  }
+// Redis bağlantısı. Host olarak "redis" yazıyoruz, çünkü Docker Compose bunu otomatik tanıyacak.
+const client = redis.createClient({
+  url: 'redis://redis:6379'
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+// Sayacı başlat
+let visits = 0;
+
+client.on('error', (err) => console.log('Redis Client Error', err));
+
+// Sunucuyu başlatmadan önce Redis'e bağlan
+client.connect().then(() => {
+    console.log('Redis bağlantısı başarılı.');
+    
+    // Redis'ten ziyaretçi sayısını çek ve sayacı başlat
+    client.get('visits').then((count) => {
+        visits = parseInt(count) || 0;
+        console.log(`Mevcut ziyaretçi sayısı: ${visits}`);
+
+        const hostname = '0.0.0.0';
+        const port = process.env.PORT || 8080;
+
+        const server = http.createServer((req, res) => {
+            if (req.url === '/') {
+                // Sayacı artır ve Redis'e kaydet
+                visits++;
+                client.set('visits', visits.toString());
+
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+                res.end(`Merhaba Ferhat! Sayfa ziyaret sayaci: ${visits} 🤖\n`);
+            } else if (req.url === '/hello') {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/plain');
+                res.end('Hello Ferhat!');
+            } else {
+                res.statusCode = 404;
+                res.end('Sayfa bulunamadı.');
+            }
+        });
+
+        server.listen(port, hostname, () => {
+            console.log(`Server running at http://${hostname}:${port}/`);
+        });
+
+    });
 });
