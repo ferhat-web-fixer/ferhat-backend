@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: '18'
           
+     # deploy.yml dosyasındaki ilgili satır:
       - name: Deploy to Railway
-        uses: railwayapp/cli@v3 # CI/CD Hatasını çözen V3
+        uses: railwayapp/cli@v4 # Sürümü V4 olarak güncelliyoruz!
         with:
-          # NOAUTH hatasını çözen token kısmı
           token: ${{ secrets.RAILWAY_TOKEN }} 
           service: ferhat-backend
