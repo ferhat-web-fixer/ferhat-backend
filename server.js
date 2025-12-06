@@ -2,11 +2,11 @@ const http = require('http');
 const redis = require('redis'); 
 
 // Redis bağlantısı. 
-// Railway'de çalışıyorsak (REDIS_URL ve REDIS_PASSWORD varsa) onları kullan, 
-// Lokaldeysek varsayılan adresi (redis:6379) kullan.
+// Bu kod, Railway'in sağladığı REDIS_URL ve ŞİFRE'yi (REDIS_PASSWORD) kullanır.
+// NOAUTH hatasını çözen kısım budur.
 const client = redis.createClient({
   url: process.env.REDIS_URL || 'redis://redis:6379',
-  password: process.env.REDIS_PASSWORD || undefined // NOAUTH hatası çözüldü
+  password: process.env.REDIS_PASSWORD || undefined 
 });
 
 // Sayacı başlat
