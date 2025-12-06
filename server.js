@@ -2,6 +2,7 @@ const http = require('http');
 const redis = require('redis'); 
 
 // Redis bağlantısı. 
+// Railway'de REDIS_URL ve şifreyi kullanır. 
 // NOAUTH hatasını çözmek için hem REDISPASSWORD hem de REDIS_PASSWORD değişkenlerini deniyoruz.
 const client = redis.createClient({
   url: process.env.REDIS_URL || 'redis://redis:6379',
@@ -22,9 +23,9 @@ client.connect().then(() => {
         visits = parseInt(count) || 0;
         console.log(`Mevcut ziyaretçi sayısı: ${visits}`);
 
-        // PORT hatasını çözmek için: Railway her zaman PORT değişkenini kullanır.
-        const hostname = '0.0.0.0';
-        const port = process.env.PORT || 8080; // Railway'deki PORT'u dinle!
+        // AĞ HATASINI ÇÖZEN KISIM: 0.0.0.0'ı yeniden ekliyoruz
+        const hostname = '0.0.0.0'; 
+        const port = process.env.PORT || 8080;
 
         const server = http.createServer((req, res) => {
             if (req.url === '/') {
@@ -51,13 +52,9 @@ client.connect().then(() => {
         });
 
     }).catch(err => {
-        // Eğer Redis'ten veri çekilirken hata olursa, sunucuyu yine de başlat
         console.error("Redis'ten ilk veriyi çekerken hata:", err);
-        // Hata durumunda bile uygulamanın tamamen çökmesini engellemek için buraya ek bir sunucu başlatma mantığı eklenebilir, 
-        // ancak şimdilik mevcut yapıyı koruyoruz.
     });
 }).catch(err => {
-    // Eğer Redis'e bağlanamazsa, hata mesajı yaz ve çök
     console.error("Redis bağlantı hatası: Uygulama çöktü.", err);
-    process.exit(1); // Uygulamayı sonlandır (Railway yeniden başlatacaktır)
+    process.exit(1);
 });
