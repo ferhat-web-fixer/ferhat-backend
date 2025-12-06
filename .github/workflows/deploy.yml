@@ -14,9 +14,8 @@ jobs:
         with:
           node-version: '18'
           
-# deploy.yml dosyasındaki ilgili satır:
-      - name: Deploy to Railway
-        uses: railwayapp/cli@v3.2.0 # En stabil sürümü tam numara ile deniyoruz
-        with:
-          token: ${{ secrets.RAILWAY_TOKEN }} 
-          service: ferhat-backend
+      - name: Install Railway CLI  # Railway CLI'ı kur
+        run: npm install -g @railway/cli 
+
+      - name: Deploy to Railway  # Kurulan CLI ile dağıtımı yap
+        run: railway up --service ferhat-backend --token ${{ secrets.RAILWAY_TOKEN }}
