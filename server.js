@@ -1,9 +1,12 @@
 const http = require('http');
-const redis = require('redis'); // Redis'i dahil et
+const redis = require('redis'); 
 
-// Redis bağlantısı. Host olarak "redis" yazıyoruz, çünkü Docker Compose bunu otomatik tanıyacak.
+// Redis bağlantısı. 
+// Railway'de çalışıyorsak (REDIS_URL ve REDIS_PASSWORD varsa) onları kullan, 
+// Lokaldeysek varsayılan adresi (redis:6379) kullan.
 const client = redis.createClient({
-  url: 'redis://redis:6379'
+  url: process.env.REDIS_URL || 'redis://redis:6379',
+  password: process.env.REDIS_PASSWORD || undefined // NOAUTH hatası çözüldü
 });
 
 // Sayacı başlat
@@ -31,7 +34,8 @@ client.connect().then(() => {
 
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-                res.end(`Merhaba Ferhat! Sayfa ziyaret sayaci: ${visits} 🤖\n`);
+                // En son eklediğimiz emoji de burada
+                res.end(`Merhaba Ferhat! Sayfa ziyaret sayaci: ${visits} 🤖\n`); 
             } else if (req.url === '/hello') {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'text/plain');
