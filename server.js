@@ -5,10 +5,8 @@ const redis = require('redis');
 // Railway'de REDIS_URL ve şifreyi kullanır. 
 // NOAUTH hatasını çözmek için hem REDISPASSWORD hem de REDIS_PASSWORD değişkenlerini deniyoruz.
 const client = redis.createClient({
-  url: process.env.REDIS_URL || 'redis://redis:6379',
-  password: process.env.REDISPASSWORD || process.env.REDIS_PASSWORD || undefined 
-});
-
+  url: process.env.REDIS_URL || 'redis://redis:6379'
+}); 
 // Sayacı başlat
 let visits = 0;
 
