@@ -1,0 +1,26 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main
+      # NOT: Ana branch'in adı 'main' değilse, burayı güncellemeyi unutma!
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Deploy to Railway
+        uses: railwayapp/cli@v3
+        with:
+          # Railway API Token'ı (Bunu Adım C'de gizli tutacağız!)
+          token: ${{ secrets.RAILWAY_TOKEN }} 
+          # Deploy edilecek servis adı
+          service: ferhat-backend 
+          # İsteğe bağlı, build komutunu Railway'e bırak
+          # command: npm install && npm run build
