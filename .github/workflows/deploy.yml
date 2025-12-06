@@ -1,5 +1,3 @@
-# ferhat-backend/.github/workflows/deploy.yml
-# LÜTFEN DOSYANIN TAMAMININ AŞAĞIDAKİ GİBİ OLDUĞUNDAN EMİN OL
 name: Deploy to Railway
 
 on:
@@ -16,9 +14,11 @@ jobs:
         with:
           node-version: '18'
           
-     # deploy.yml dosyasındaki ilgili satır:
       - name: Deploy to Railway
-        uses: railwayapp/cli@v4 # Sürümü V4 olarak güncelliyoruz!
+        # En stabil sürümü kullanıyoruz: master branch'i
+        uses: railwayapp/cli@master 
         with:
+          # Railway API Token'ı (Gizli tutulmalı)
           token: ${{ secrets.RAILWAY_TOKEN }} 
+          # Deploy edilecek servis adı
           service: ferhat-backend
